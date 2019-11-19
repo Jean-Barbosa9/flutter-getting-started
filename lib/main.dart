@@ -1,6 +1,4 @@
-import 'package:english_words/english_words.dart' as prefix0;
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:english_words/english_words.dart';
 
 void main() => runApp(StartupNames());
@@ -21,8 +19,9 @@ class RandomWords extends StatefulWidget {
 }
 
 class RandomWordsState extends State<RandomWords> {
-  final _suggestions = <WordPair>[]; 
-  final _biggerFont = const TextStyle(fontSize: 18.0);
+  final List<WordPair> _suggestions = <WordPair>[]; 
+  final Set<WordPair> _saved = Set<WordPair>();
+  final TextStyle _biggerFont = const TextStyle(fontSize: 18.0);
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,10 +33,15 @@ class RandomWordsState extends State<RandomWords> {
   }
 
   Widget _buildRow(WordPair pair) {
+    final bool alreadySaved = _saved.contains(pair);
     return ListTile(
       title: Text(
         pair.asPascalCase,
         style: _biggerFont,
+      ),
+      trailing: Icon(
+        alreadySaved ? Icons.favorite : Icons.favorite_border,
+        color: alreadySaved ? Colors.red : null
       ),
     );
   }
