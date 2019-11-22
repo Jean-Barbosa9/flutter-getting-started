@@ -1,110 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
 
-void main() => runApp(StartupNames());
+// Code base on Net Ninja YouTube Tutorial
 
-class StartupNames extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Startup Name Generator',
-      theme: ThemeData(
-        primaryColor: Colors.black,
+void main() =>
+    runApp(
+      MaterialApp(
+        title: 'Net Ninja Tutorial',
+        home: NetNinjasTutorial(),
       ),
-      home: RandomWords(),
     );
-  }
-}
 
-class RandomWords extends StatefulWidget {
-  @override
-  RandomWordsState createState() => RandomWordsState();
-}
-
-class RandomWordsState extends State<RandomWords> {
-  final List<WordPair> _suggestions = <WordPair>[]; 
-  final Set<WordPair> _saved = Set<WordPair>();
-  final TextStyle _biggerFont = const TextStyle(fontSize: 18.0);
-
+class NetNinjasTutorial extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Startup Name Generator'),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.list), onPressed: _pushSaved),
-        ]
+        title: Text('Net Ninja Tutorial'),
+        centerTitle: true,
+        backgroundColor: Colors.red[600],
       ),
-      body: _buildSuggestions(),
-    );
-  }
-
-  void _pushSaved() {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (BuildContext context) {
-          final Iterable<ListTile> tiles = _saved.map(
-            (WordPair pair) {
-              return ListTile(
-                title: Text(
-                  pair.asPascalCase,
-                  style: _biggerFont,
-                )
-              );
-            },
-          );
-          
-          final List<Widget> divided = ListTile.divideTiles(
-            context: context,
-            tiles: tiles,
-          ).toList();
-          
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('Saved Suggestions'),
-            ),
-            body: ListView(children: divided)
-          );
-        },
+      body: Center(
+        child: Text(
+        'Hello ninjas',
+        style: TextStyle(
+          fontFamily: 'IndieFlower',
+          fontSize: 25.0,
+          color: Colors.red[600],
+          fontWeight: FontWeight.bold,
+          letterSpacing: 2.0,
+          )
+        )
       ),
-    );
-  }
-
-  Widget _buildRow(WordPair pair) {
-    final bool alreadySaved = _saved.contains(pair);
-    return ListTile(
-      leading: Icon(
-        alreadySaved ? Icons.check : Icons.check_box_outline_blank,
-        color: alreadySaved ? Colors.black : null,
-        size: 30, 
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Text('click'),
+        backgroundColor: Colors.black,
       ),
-      title: Text(
-        pair.asPascalCase,
-        style: _biggerFont,
-      ),
-      onTap:(() {
-        setState(() {
-          if(alreadySaved) {
-            _saved.remove(pair);
-          } else {
-            _saved.add(pair);
-          }
-        });
-      }),
-    );
-  }
-
-  Widget _buildSuggestions() {
-    return ListView.builder(
-      padding: const EdgeInsets.all(16.0),
-      itemBuilder: (context, i) {
-        if(i.isOdd) return Divider();
-        final index = i ~/ 2;
-        if(index >= _suggestions.length) {
-          _suggestions.addAll(generateWordPairs().take(10));
-        }
-        return _buildRow(_suggestions[index]);
-      },
     );
   }
 }
